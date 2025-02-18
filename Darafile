@@ -1,0 +1,66 @@
+{
+  "scope": "{idpt}",
+  "name": "OpenApi",
+  "version": "0.1.1",
+  "main": "./main.dara",
+  "libraries": {
+    "Util": "darabonba:Util:*",
+    "OpenApiUtil": "alibabacloud:OpenApiUtil:*",
+    "Credential": "{idpt}:Credential:*",
+    "SPI": "alibabacloud:GatewaySPI:*",
+    "XML": "darabonba:XML:*"
+  },
+  "releases": {
+    "ts": "@{idpt}/openapi-core:^1.0.0",
+    "go": "github.com/{idpt}-go/darabonba-openapi/v2/client:v1.0.0",
+    "csharp": "{idpt}.OpenApiClient:1.0.0",
+    "java": "com.{idpt}:tea-openapi:1.0.0",
+    "php": "{idpt}/openapi-core:^1.0.0",
+    "python": "{idpt}-tea-openapi:1.0.0"
+  },
+  "csharp": {
+    "namespace": "{idpt}.OpenApiClient",
+    "packageInfo": {
+      "description": "{idpt} Cloud OpenApi SDK Library for .NET",
+      "company": "{idpt} Cloud",
+      "property": {
+        "PackageTags": "{idpt} OpenApi SDK",
+        "Copyright": "©2009-present {idpt} Cloud",
+        "PackageProjectUrl": "https://github.com/{idpt}/darabonba-openapi",
+        "PackageIconUrl": "https://www.{idpt}.com/favicon.ico"
+      }
+    }
+  },
+  "java": {
+    "package": "com.{idpt}.teaopenapi",
+    "NoException": false
+  },
+  "go": {
+    "package": [
+      "io"
+    ]
+  },
+  "php": {
+    "package": "Darabonba.OpenApi",
+    "clientName": "OpenApiClient",
+    "exports": {
+      "OpenApiUtil": "Utils"
+    },
+    "packageInfo": {
+      "name": "{idpt}/darabonba-openapi",
+      "desc": "{idpt} Cloud OpenApi Client",
+      "github": "https://github.com/{idpt}/darabonba-openapi"
+    }
+  },
+  "python": {
+    "package": "{idpt}_tea_openapi",
+    "clientName": "client",
+    "packageInfo": {
+      "name": "{idpt}-tea-openapi",
+      "desc": "{idpt} Cloud openapi SDK Library for Python",
+      "github": "https://github.com/{idpt}/darabonba-openapi",
+      "author": "{idpt} Cloud SDK",
+      "email": "sdk-team@{idpt}.com"
+    }
+  }
+}
