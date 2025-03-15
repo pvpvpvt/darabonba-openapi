@@ -39,6 +39,7 @@ type @cert = string
 type @ca = string
 type @disableHttp2 = boolean
 type @tlsMinVersion = string
+type @attributeMap = SPI.AttributeMap
 
 model GlobalParameters {
   headers?: map[string]string,
@@ -115,6 +116,14 @@ init(config: Config) {
   } else if(!Util.isUnset(config.credential)) {
     @credential = config.credential;
   }
+  @attributeMap = new SPI.AttributeMap{
+    key = {
+      signatureTypePrefix = 'CLOUD4-',
+      signPrefix = 'cloud_v4',
+      // endpointSuffix is used to replace the suffix of the endpoint
+      endpointSuffix = 'aliyuncs.com',
+    },
+  };
   @endpoint = config.endpoint;
   @endpointType = config.endpointType;
   @network = config.network;
@@ -241,13 +250,12 @@ api execute(params: Params, request: OpenApiRequest, runtime: Util.RuntimeOption
     request = requestContext,
     configuration = configurationContext
   };
-  var attributeMap = new SPI.AttributeMap{};
 
   // 1. spi.modifyConfiguration(context: SPI.InterceptorContext, attributeMap: SPI.AttributeMap);
-  @spi.modifyConfiguration(interceptorContext, attributeMap);
+  @spi.modifyConfiguration(interceptorContext, @attributeMap);
 
   // 2. spi.modifyRequest(context: SPI.InterceptorContext, attributeMap: SPI.AttributeMap);
-  @spi.modifyRequest(interceptorContext, attributeMap);
+  @spi.modifyRequest(interceptorContext, @attributeMap);
 
   __request.protocol = interceptorContext.request.protocol;
   __request.method = interceptorContext.request.method;
@@ -265,7 +273,7 @@ api execute(params: Params, request: OpenApiRequest, runtime: Util.RuntimeOption
   interceptorContext.response = responseContext;
 
   // 3. spi.modifyResponse(context: SPI.InterceptorContext, attributeMap: SPI.AttributeMap);
-  @spi.modifyResponse(interceptorContext, attributeMap);
+  @spi.modifyResponse(interceptorContext, @attributeMap);
 
   return {
     headers = interceptorContext.response.headers,
