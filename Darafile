@@ -8,7 +8,8 @@
     "OpenApiUtil": "alibabacloud:OpenApiUtil:*",
     "Credential": "{idpt}:Credential:*",
     "SPI": "alibabacloud:GatewaySPI:*",
-    "XML": "darabonba:XML:*"
+    "XML": "darabonba:XML:*",
+    "String": "darabonba:String:*"
   },
   "releases": {
     "ts": "@{idpt}/openapi-core:^1.0.0",

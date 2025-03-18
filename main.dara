@@ -7,6 +7,7 @@ import Credential;
 import OpenApiUtil;
 import SPI;
 import XML;
+import String;
 
 type @endpoint = string
 type @regionId = string
@@ -313,6 +314,7 @@ api execute(params: Params, request: OpenApiRequest, runtime: Util.RuntimeOption
  */
 function getUserAgent(): string {
   var userAgent = Util.getUserAgent(@userAgent);
+  userAgent = String.replace(userAgent, 'AlibabaCloud', 'Cloud', null);
   return userAgent;
 }
 
