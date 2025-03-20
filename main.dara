@@ -4,6 +4,7 @@
 
 import Util;
 import Credential;
+import IdptCredential;
 import OpenApiUtil;
 import SPI;
 import XML;
@@ -29,7 +30,7 @@ type @productId = string
 type @maxIdleConns = integer
 type @endpointType = string
 type @openPlatformEndpoint = string
-type @credential = Credential
+type @credential = IdptCredential
 type @signatureVersion = string
 type @signatureAlgorithm = string
 type @headers = map[string]string
@@ -61,7 +62,7 @@ model Config {
   connectTimeout?: integer(description='connect timeout',example='10',default=''),
   httpProxy?: string(description='http proxy',example='http://localhost',default=''),
   httpsProxy?: string(description='https proxy',example='https://localhost',default=''),
-  credential?: Credential(description='credential',example='',default=''),
+  credential?: IdptCredential(description='credential',example='',default=''),
   endpoint?: string(description='endpoint',example='cs.aliyuncs.com',default=''),
   noProxy?: string(description='proxy white list',example='http://localhost',default=''),
   maxIdleConns?: integer(description='max idle conns',example='3',default=''),
@@ -101,26 +102,26 @@ init(config: Config) {
     } else {
       config.type = 'access_key';
     }
-    var credentialConfig = new Credential.Config{
+    var credentialConfig = new IdptCredential.Config{
       accessKeyId = config.accessKeyId,
       type = config.type,
       accessKeySecret = config.accessKeySecret
     };
     credentialConfig.securityToken = config.securityToken;
-    @credential = new Credential(credentialConfig);
+    @credential = new IdptCredential(credentialConfig);
   } else if (!Util.empty(config.bearerToken)) {
-    var cc = new Credential.Config{
+    var cc = new IdptCredential.Config{
       type = 'bearer',
       bearerToken = config.bearerToken
     };
-    @credential = new Credential(cc);
+    @credential = new IdptCredential(cc);
   } else if(!Util.isUnset(config.credential)) {
     @credential = config.credential;
   }
   @attributeMap = new SPI.AttributeMap{
     key = {
-      signatureTypePrefix = 'CLOUD4-',
-      signPrefix = 'cloud_v4',
+      signatureTypePrefix = 'APSARA4-',
+      signPrefix = 'apsara_v4',
       // endpointSuffix is used to replace the suffix of the endpoint
       endpointSuffix = 'aliyuncs.com',
     },
@@ -209,6 +210,24 @@ api execute(params: Params, request: OpenApiRequest, runtime: Util.RuntimeOption
       extendsQueries = extendsParameters.queries;
     }
   }
+  if (Util.isUnset(@credential)) {
+      throw {
+        code = 'ParameterMissing',
+        message = '\'config.credential\' can not be unset'
+      };
+    }
+  var credentialModel = @credential.getCredential();
+  var type = 'access_key';
+  if (!Util.empty(credentialModel.securityToken)) {
+      type = 'sts';
+  }
+  var credConfig = new Credential.Config{
+      type = type,
+      accessKeyId = credentialModel.accessKeyId,
+      accessKeySecret = credentialModel.accessKeySecret,
+      securityToken = credentialModel.securityToken
+  };
+  var newCredential = new Credential(credConfig);
   var requestContext = new SPI.InterceptorContext.request{
     headers = {
       ...globalHeaders,
@@ -233,7 +252,7 @@ api execute(params: Params, request: OpenApiRequest, runtime: Util.RuntimeOption
     bodyType = params.bodyType,
     reqBodyType = params.reqBodyType,
     style = params.style,
-    credential = @credential,
+    credential = newCredential,
     signatureVersion = @signatureVersion,
     signatureAlgorithm = @signatureAlgorithm,
     userAgent = getUserAgent()
@@ -314,7 +333,7 @@ api execute(params: Params, request: OpenApiRequest, runtime: Util.RuntimeOption
  */
 function getUserAgent(): string {
   var userAgent = Util.getUserAgent(@userAgent);
-  userAgent = String.replace(userAgent, 'AlibabaCloud', 'Cloud', null);
+  userAgent = String.replace(userAgent, 'AlibabaCloud', 'ApsaraCloud', null);
   return userAgent;
 }
 

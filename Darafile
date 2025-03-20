@@ -1,40 +1,52 @@
 {
-  "scope": "{idpt}",
-  "name": "OpenApi",
-  "version": "0.1.1",
+  "scope": "idpt",
+  "name": "{{idpt}}-openapi",
+  "version": "1.0.0",
   "main": "./main.dara",
   "libraries": {
     "Util": "darabonba:Util:*",
     "OpenApiUtil": "alibabacloud:OpenApiUtil:*",
-    "Credential": "{idpt}:Credential:*",
+    "Credential": "alibabacloud:Credential:*",
+    "IdptCredential": "idpt:{{idpt}}-credential:*",
     "SPI": "alibabacloud:GatewaySPI:*",
     "XML": "darabonba:XML:*",
     "String": "darabonba:String:*"
   },
   "releases": {
-    "ts": "@{idpt}/openapi-core:^1.0.0",
-    "go": "github.com/{idpt}-go/darabonba-openapi/v2/client:v1.0.0",
-    "csharp": "{idpt}.OpenApiClient:1.0.0",
-    "java": "com.{idpt}:tea-openapi:1.0.0",
-    "php": "{idpt}/openapi-core:^1.0.0",
-    "python": "{idpt}-tea-openapi:1.0.0"
+    "ts": "@{{idpt}}/openapi-core:^1.0.0",
+    "go": "{{openapi-go-git}}/client:v1.0.0",
+    "csharp": "{{Idpt}}.OpenApiCore:1.0.0",
+    "java": "com.{{idpt}}:openapi-core:1.0.0",
+    "php": "{{idpt}}/openapi-core:^1.0.0",
+    "python": "{{idpt}}-openapi-core:1.0.0"
   },
   "csharp": {
-    "namespace": "{idpt}.OpenApiClient",
+    "namespace": "{{Idpt}}.OpenApiCore",
     "packageInfo": {
-      "description": "{idpt} Cloud OpenApi SDK Library for .NET",
-      "company": "{idpt} Cloud",
+      "name": "{{Idpt}}.OpenApiCore",
+      "version": "1.0.0",
+      "title": "{{idpt}}-openapi",
+      "description": "{{Idpt}} Cloud OpenApi SDK Library for .NET",
+      "company": "{{Idpt}} Cloud",
       "property": {
-        "PackageTags": "{idpt} OpenApi SDK",
-        "Copyright": "©2009-present {idpt} Cloud",
-        "PackageProjectUrl": "https://github.com/{idpt}/darabonba-openapi",
-        "PackageIconUrl": "https://www.{idpt}.com/favicon.ico"
+        "PackageTags": "{{Idpt}} OpenApi SDK",
+        "Copyright": "©2009-present {{Idpt}} Cloud",
+        "PackageProjectUrl": "{{openapi-csharp-git}}"
       }
     }
   },
   "java": {
-    "package": "com.{idpt}.teaopenapi",
-    "NoException": false
+    "package": "com.{{idpt}}.openapi",
+    "NoException": true,
+    "packageInfo": {
+      "groupId": "com.{{idpt}}",
+      "artifactId": "openapi-core",
+      "version": "1.0.0",
+      "description": "OpenApi SDK for Java",
+      "url": "{{openapi-java-git}}",
+      "licenseName": "The Apache License, Version 2.0",
+      "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+    }
   },
   "go": {
     "package": [
@@ -42,26 +54,22 @@
     ]
   },
   "php": {
-    "package": "Darabonba.OpenApi",
+    "package": "{{Idpt}}.OpenApi",
     "clientName": "OpenApiClient",
-    "exports": {
-      "OpenApiUtil": "Utils"
-    },
     "packageInfo": {
-      "name": "{idpt}/darabonba-openapi",
+      "name": "{idpt}/openapi-core",
       "desc": "{idpt} Cloud OpenApi Client",
-      "github": "https://github.com/{idpt}/darabonba-openapi"
+      "github": "{{openapi-php-git}}"
     }
   },
   "python": {
-    "package": "{idpt}_tea_openapi",
+    "package": "{idpt}_openapi",
     "clientName": "client",
     "packageInfo": {
-      "name": "{idpt}-tea-openapi",
-      "desc": "{idpt} Cloud openapi SDK Library for Python",
-      "github": "https://github.com/{idpt}/darabonba-openapi",
-      "author": "{idpt} Cloud SDK",
-      "email": "sdk-team@{idpt}.com"
+      "name": "{idpt}-openapi-core",
+      "desc": "{{Idpt}} Cloud openapi SDK Library for Python",
+      "github": "{{openapi-python-git}}",
+      "author": "{{Idpt}} Cloud SDK"
     }
   }
 }
